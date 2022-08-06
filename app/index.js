@@ -1,10 +1,7 @@
 let form = document.querySelector("#form");
-
 const listItems = document.querySelectorAll(".task-item");
-
 let ul = document.querySelector("#task-list");
-
-const controlBtns = document.querySelectorAll(".btn");
+//const controlBtns = document.querySelectorAll(".btn");
 
 function addTask(task) {
   let li = document.createElement("li"); //<li></li>

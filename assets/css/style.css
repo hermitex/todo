@@ -1,7 +1,38 @@
-*, *::before, *::after {
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+
+}
+
+:root {
+    --primary: #514663;
+    --secondary: #4D5382;
+    --darkest: ;
+    --light: #fff;
+    --grey: ;
+}
+
+body {
+    background: var(--primary);
+    color: var(--light);
+    display: flex;
+    flex-direction: 100vh;
+    background: var();
+}
+.container {
+    max-width: 960px;
+    width: 70%;
+    margin: 0 auto;
+    border: 1px solid red;
+
+}
+#form {
+    margin-top: 3rem;
+}
+.task-list {
+    list-style: none;
+    margin-top: 1rem;
 }
 
 
