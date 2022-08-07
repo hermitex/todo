@@ -19,19 +19,29 @@ body {
     flex-direction: 100vh;
     background: var();
 }
+
 .container {
     max-width: 960px;
     width: 70%;
     margin: 0 auto;
     border: 1px solid red;
-
 }
+
 #form {
     margin-top: 3rem;
 }
+
 .task-list {
     list-style: none;
     margin-top: 1rem;
+}
+span {
+    display: flex;
+    justify-content: flex-end;
+}
+
+button.btn.delete {
+    margin-right: 0.5rem;
 }
 
 
