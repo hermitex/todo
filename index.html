@@ -12,36 +12,35 @@
 
         <form action="" id="form">
           <label for="task">Enter Task: </label> 
-          <input type="text" id="task">
+          <input type="text" id="task" placeholder="e.g. Walk the dog">
           <button type="submit" class="submit-btn">Add Task</button>
         </form>
 
         <div class="task-wrapper">
 
-          <ul class="task-list" id="task-list">
-            
-            <li class="task-item">Task 1
-              <span>
-                <button class="btn delete">Delete</button>
-                <button class="btn edit">Edit</button>
-              </span>
-          </li>
+          <table class="task-list" id="task-list">
+           
+              <thead>
+                <tr>
+                  <th>Task id</th>
+                  <th>Task name</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td class="task-item">Example Task</td>
+                  <td>
+                  <span>
+                    <button class="btn delete">Delete</button>
+                    <button class="btn edit">Edit</button>
+                  </span>
+                </td>
+                </tr>
+            </tbody>
 
-            <li class="task-item">Task 2
-              <span>
-                <button class="btn delete">Delete</button>
-                <button class="btn edit">Edit</button>
-            </span>
-            </li>
-
-            <li class="task-item">Task 3
-              <span>
-                <button class="btn delete">Delete</button>
-                <button class="btn edit">Edit</button>
-            </span>
-            </li>
-
-          </ul>
+          </table>
         </div>
 
       </div>

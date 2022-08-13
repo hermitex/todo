@@ -33,11 +33,20 @@ body {
 
 .task-list {
     list-style: none;
+    align-items: center;
     margin-top: 1rem;
+
+}
+.task-item {
+    border-bottom: 1px solid #fff;
 }
 span {
     display: flex;
     justify-content: flex-end;
+
+}
+.btn {
+    align-items: center;
 }
 
 button.btn.delete {

@@ -1,31 +1,42 @@
 let form = document.querySelector("#form");
 const listItems = document.querySelectorAll(".task-item");
-let ul = document.querySelector("#task-list");
+let tbody = document.querySelector("tbody");
+const editButton = document.createElement("button");
+//mh
+// On app load, get all tasks from localStorage
+//mh
 //const controlBtns = document.querySelectorAll(".btn");
-
+//create the item
 function addTask(task) {
-  let li = document.createElement("li"); //<li></li>
-
+  let tr = document.createElement("tr"); //<li></li>
+  let tdId = document.createElement("td");
+  let tdTaskName = document.createElement("td");
+  tdTaskName.classList.add('task-name');
+  let tdActions = document.createElement("td");
+  let tableBody = document.querySelector("tbody");
+  const spanEl = document.createElement("span");
+  const delButton = document.createElement("button");
+  const editButton = document.createElement("button");
   //add the class task-item to the newly created li
-  li.classList.add("task-item");
-  li.textContent = task; //<li>task 1</li>
-  let ul = document.querySelector("#task-list");
+  tr.classList.add("task-item");
+  tdId.textContent = new Date().getMilliseconds().toString();
+  tdTaskName.textContent = task; //<li>task 1</li>
+ 
   /*Element.append() allows you to 
     also append string objects*/
-  ul.appendChild(li); //why not just append
-  const spanEl = document.createElement("span");
-  li.appendChild(spanEl);
-  //mh add delete button
-  const delButton = document.createElement("button");
+  //table.append(tr);
+  tr.appendChild(spanEl);
+ 
+  //Delete
+  delButton.addEventListener("click", deleteTodo);
   delButton.classList.add("btn");
   delButton.classList.add("delete");
   delButton.innerHTML = "Delete";
-
   /* a click event and pass in a callback function. Do not invoke it immediately. 
   Just pass the function name as bellow. */
-  delButton.addEventListener("click", deleteTodo);
+
   //mh add edit button
-  const editButton = document.createElement("button");
+  
   editButton.classList.add("btn");
   editButton.classList.add("edit");
   editButton.innerHTML = "Edit";
@@ -33,48 +44,44 @@ function addTask(task) {
   Do not invoke it immediately. 
   Just pass the function name as bellow. */
   editButton.addEventListener("click", editTodo);
-
+  //saveButton.addEventListener("click", saveTodo);
   spanEl.append(delButton);
   spanEl.append(editButton);
+  tdActions.append(spanEl);
+
+  tr.appendChild(tdId)
+  tr.appendChild(tdTaskName)
+  tr.appendChild(tdActions)
   //mh add edit button
+  tableBody.appendChild(tr);
 }
 
 form.addEventListener("submit", function (event) {
   event.preventDefault();
-
   let value = document.querySelector("#task").value;
   console.log(value);
   //add the inputted task
   addTask(value);
 });
 
-//manipulating list items
-// console.log(controlBtns)
-// for (let i = 0; i < controlBtns.length; i++) {
-//     alert(1)
-//     controlBtns[i].addEventListener('click', function(event){
-//         let typeOfBtn = event.target.classList;
-//         if(typeOfBtn.contains('delete')){
-//             let parent = event.target.parentNode.parentNode;
-//             ul.removeChild(parent);
-//         }
-
-//     })
-// }
-
 // Define the callback functions here and write the logic
 const editTodo = (event) => {
-    editableItem = event.target.parentNode.parentNode;
-    editableItem.contentEditable = true;
-    editableItem.style.backgroundColor = "#dddbdb";
-    console.log(event.target.parentNode.parentNode);
-    };
+  editableItem = event.target.parentNode.parentNode.parentNode.querySelector(".task-name");
+  console.log(editableItem.children);
+  editableItem.contentEditable = true;
+  editableItem.style.backgroundColor = "#6d529a";
+  editButton.innerHTML = "Save";
+  editButton.contentEditable = false; 
+  //let storedValue = localStorage.getItem(editableItem);
 
+  //console.log(event.target.parentNode.parentNode);
+};
+                                                                    
 const deleteTodo = (event) => {
-    let typeOfBtn = event.target.classList;
-    console.log(event.target.parentNode);
+  let typeOfBtn = event.target.classList;
+  console.log(event.target.parentNode);
   if (typeOfBtn.contains("delete")) {
-    let parent = event.target.parentNode.parentNode;
-    ul.removeChild(parent);
+    let parent = event.target.parentNode.parentNode.parentNode;
+    tbody.removeChild(parent);
   }
 };
