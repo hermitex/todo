@@ -1,14 +1,22 @@
 /*
+get the time and break it down to its components hours minutes etc
+convert it to from 24 hour time to standard format
+use the update function to get the time, format it
+place the formatted time on the page
+
 24 mod 12 = 12 the remainder
 23 % 12 = 11 the remainder
 22 % 12 = 10 the remainder
 etc
+classes can only be initiated by new keyword
 */
 class DigitalClock {
     constructor(element) {
-        this.element = element; //ensures the object we create has a reference to the div we create
+        this.element = element; 
+        //ensures the object we create has a reference to the div we create
         console.log(this.element);
     } //shows the element being used
+   
     //every 500 milliseconds check the time and then update it
     //using the update function
     start() {
@@ -46,6 +54,7 @@ class DigitalClock {
 }
 
 const clockElement = document.querySelector(".clock");
+//new is used to create a new instance of an object
 const clockObject = new DigitalClock(clockElement);
-
+//start function initiated on clockObject
 clockObject.start();

@@ -59,6 +59,13 @@ function addTask(task) {
 form.addEventListener("submit", function (event) {
   event.preventDefault();
   let value = document.querySelector("#task").value;
+  let db = localStorage;
+
+  let data {
+    
+  }
+
+ 
   console.log(value);
   //add the inputted task
   addTask(value);
