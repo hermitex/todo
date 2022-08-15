@@ -1,83 +1,179 @@
-let form = document.querySelector("#form");
+const db = localStorage;
+let tbody = document.querySelector("tbody");
+function getAllTasks() {
+  // Parse tasks from locastoroge
+  let tasks = JSON.parse(db.getItem("tasks"));
+  // clear the current DOM state before appending the new list. This will prevent us from displaying duplicates
+  tbody.innerHTML = "";
 
-const listItems = document.querySelectorAll(".task-item");
-
-let ul = document.querySelector("#task-list");
-
-const controlBtns = document.querySelectorAll(".btn");
-
-function addTask(task) {
-  let li = document.createElement("li"); //<li></li>
-
-  //add the class task-item to the newly created li
-  li.classList.add("task-item");
-  li.textContent = task; //<li>task 1</li>
-  let ul = document.querySelector("#task-list");
-  /*Element.append() allows you to 
-    also append string objects*/
-  ul.appendChild(li); //why not just append
-  const spanEl = document.createElement("span");
-  li.appendChild(spanEl);
-  //mh add delete button
-  const delButton = document.createElement("button");
-  delButton.classList.add("btn");
-  delButton.classList.add("delete");
-  delButton.innerHTML = "Delete";
-
-  /* a click event and pass in a callback function. Do not invoke it immediately. 
-  Just pass the function name as bellow. */
-  delButton.addEventListener("click", deleteTodo);
-  //mh add edit button
-  const editButton = document.createElement("button");
-  editButton.classList.add("btn");
-  editButton.classList.add("edit");
-  editButton.innerHTML = "Edit";
-  /* a click event and pass in a callback function. 
-  Do not invoke it immediately. 
-  Just pass the function name as bellow. */
-  editButton.addEventListener("click", editTodo);
-
-  spanEl.append(delButton);
-  spanEl.append(editButton);
-  //mh add edit button
+  // Display all tasks
+  tasks.map((task) => {
+    tbody.innerHTML += `
+    <tr id = ${task.id}>
+      <td>${task.id}</td>
+      <td class="task-name task-item">${task.name}</td>
+      <td>
+        <span>
+          <button class="btn edit" >Edit</button>
+          <button class="btn delete" >Delete</button>
+        </span>
+      </td>
+    </tr>
+    `;
+  });
 }
 
-form.addEventListener("submit", function (event) {
-  event.preventDefault();
+getAllTasks();
 
-  let value = document.querySelector("#task").value;
-  console.log(value);
-  //add the inputted task
-  addTask(value);
-});
+document.addEventListener("DOMContentLoaded", () => {
+  let form = document.querySelector("#form");
 
-//manipulating list items
-// console.log(controlBtns)
-// for (let i = 0; i < controlBtns.length; i++) {
-//     alert(1)
-//     controlBtns[i].addEventListener('click', function(event){
-//         let typeOfBtn = event.target.classList;
-//         if(typeOfBtn.contains('delete')){
-//             let parent = event.target.parentNode.parentNode;
-//             ul.removeChild(parent);
-//         }
+  const controlBtns = document.querySelectorAll(".btn");
 
-//     })
-// }
+  // We won't need this function. Instead, we are going to add our todos to the localstorage and retrieve them with getAllTasks() above
+  // function addTask(task) {
+  //   let tr = document.createElement("tr"); //<li></li>
+  //   let tdId = document.createElement("td");
+  //   let tdTaskName = document.createElement("td");
+  //   tdTaskName.classList.add("task-name");
+  //   let tdActions = document.createElement("td");
+  //   let tableBody = document.querySelector("tbody");
+  //   const spanEl = document.createElement("span");
+  //   const delButton = document.createElement("button");
+  //   const editButton = document.createElement("button");
 
-// Define the callback functions here and write the logic
-const editTodo = (event) => {
-    editableItem = event.target.parentNode.parentNode;
+  //   //add the class task-item to the newly created li
+  //   tr.classList.add("task-item");
+  //   tdId.textContent = new Date().getMilliseconds().toString();
+  //   tdTaskName.textContent = task;
+
+  //   // Delete button
+  //   delButton.classList.add("btn");
+  //   delButton.classList.add("delete");
+  //   delButton.innerHTML = "Delete";
+
+  //   /* a click event and pass in a callback function. Do not invoke it immediately.
+  //   Just pass the function name as bellow. */
+  //   delButton.addEventListener("click", deleteTodoById);
+  //   //mh add edit button
+
+  //   // Edit button
+  //   editButton.classList.add("btn");
+  //   editButton.classList.add("edit");
+  //   editButton.innerHTML = "Edit";
+  //   /* a click event and pass in a callback function.
+  //   Do not invoke it immediately.
+  //   Just pass the function name as bellow. */
+  //   editButton.addEventListener("click", editTodo);
+
+  //   spanEl.append(delButton);
+  //   spanEl.append(editButton);
+  //   tdActions.append(spanEl);
+  //   //mh add edit button
+
+  //   tr.appendChild(tdId);
+  //   tr.appendChild(tdTaskName);
+  //   tr.appendChild(tdActions);
+
+  //   tableBody.appendChild(tr);
+  // }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    let value = document.querySelector("#task").value;
+
+    let currentTasks = null;
+
+    let data = [
+      {
+        id: "",
+        name: "",
+      },
+    ];
+
+    if (db.length) {
+      currentTasks = JSON.parse(db.getItem("tasks"));
+
+      data = [
+        ...currentTasks,
+        {
+          id: new Date().getMilliseconds().toString(),
+          name: value,
+        },
+      ];
+    } else {
+      data = [
+        {
+          id: new Date().getMilliseconds().toString(),
+          name: value,
+        },
+      ];
+    }
+
+    db.setItem("tasks", JSON.stringify(data));
+
+    //add the inputted task
+    getAllTasks();
+  });
+
+  //manipulating list items
+
+  // Define the callback functions here and write the logic
+  const editTodo = (event) => {
+    editableItem =
+      event.target.parentNode.parentNode.parentNode.querySelector(".task-name");
     editableItem.contentEditable = true;
+    editableItem.focus();
     editableItem.style.backgroundColor = "#dddbdb";
-    console.log(event.target.parentNode.parentNode);
-    };
+    let editedTask = "";
+    let id = event.target.parentNode.parentNode.parentNode.id;
 
-const deleteTodo = (event) => {
-    let typeOfBtn = event.target.classList;
-    console.log(event.target.parentNode);
-  if (typeOfBtn.contains("delete")) {
-    let parent = event.target.parentNode.parentNode;
-    ul.removeChild(parent);
+    editableItem.addEventListener("input", () => {
+      editedTask = editableItem.textContent;
+    });
+
+    editableItem.addEventListener("blur", () => {
+      // make content read-only
+      editableItem.contentEditable = false;
+      // change background color to white
+      editableItem.style.backgroundColor = "#fff";
+      // get edited element
+      let currentTasks = JSON.parse(db.getItem("tasks")).map((task) => {
+        if (id === task.id) {
+          return { ...task, name: editedTask };
+        } else {
+          return task;
+        }
+      });
+      // update storage
+      db.setItem("tasks", JSON.stringify(currentTasks));
+    });
+  };
+
+  // Delete todo
+  const deleteTodoById = (id) => {
+    // remove element to be deleted form collection
+    let tasksInDb = JSON.parse(db.getItem("tasks")).filter(
+      (task) => task.id != id
+    );
+    db.setItem("tasks", JSON.stringify(tasksInDb));
+    // reload window
+    window.location = "/";
+  };
+
+  // Check action [delete or edit]
+  function checkAction(event) {
+    let id = event.target.parentNode.parentNode.parentNode.id;
+    if (event.target.classList.contains("delete")) {
+      deleteTodoById(id);
+    } else {
+      editTodo(event);
+    }
   }
-};
+
+  // Add event listener
+  controlBtns.forEach((btn) => {
+    btn.addEventListener("click", checkAction);
+  });
+});
