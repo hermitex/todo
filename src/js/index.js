@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
     editableItem.style.backgroundColor = "#dddbdb";
     let editedTask = "";
     let id = event.target.parentNode.parentNode.parentNode.id;
-
+    let currentItem = editableItem.textContent;
     editableItem.addEventListener("input", () => {
       editedTask = editableItem.textContent;
     });
@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // get edited element
       let currentTasks = JSON.parse(db.getItem("tasks")).map((task) => {
         if (id === task.id) {
-          return { ...task, name: editedTask };
+          return { ...task, name: editedTask || currentItem };
         } else {
           return task;
         }
