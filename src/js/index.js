@@ -23,15 +23,7 @@ function getAllTasks() {
       `;
     });
   } else {
-    db.setItem(
-      "tasks",
-      JSON.stringify([
-        {
-          id: "",
-          name: "",
-        },
-      ])
-    );
+    db.setItem("tasks", JSON.stringify([]));
   }
 }
 
