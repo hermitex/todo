@@ -7,20 +7,22 @@ function getAllTasks() {
   tbody.innerHTML = "";
 
   // Display all tasks
-  tasks.map((task) => {
-    tbody.innerHTML += `
-    <tr id = ${task.id}>
-      <td>${task.id}</td>
-      <td class="task-name task-item">${task.name}</td>
-      <td>
-        <span>
-          <button class="btn edit" >Edit</button>
-          <button class="btn delete" >Delete</button>
-        </span>
-      </td>
-    </tr>
-    `;
-  });
+  if (tasks.length) {
+    tasks.map((task, i) => {
+      tbody.innerHTML += `
+      <tr >
+        <td>${i + 1}</td>
+        <td class="task-name task-item">${task.name}</td>
+        <td>
+          <span id=${task.id}>
+            <button class="btn edit" >Edit</button>
+            <button class="btn delete" >Delete</button>
+          </span>
+        </td>
+      </tr>
+      `;
+    });
+  }
 }
 
 getAllTasks();
@@ -114,20 +116,20 @@ document.addEventListener("DOMContentLoaded", () => {
     db.setItem("tasks", JSON.stringify(data));
 
     //add the inputted task
-    getAllTasks();
+    // getAllTasks();
+    window.location.reload();
   });
 
   //manipulating list items
 
   // Define the callback functions here and write the logic
-  const editTodo = (event) => {
+  const editTodo = (event, id) => {
     editableItem =
       event.target.parentNode.parentNode.parentNode.querySelector(".task-name");
     editableItem.contentEditable = true;
     editableItem.focus();
     editableItem.style.backgroundColor = "#dddbdb";
     let editedTask = "";
-    let id = event.target.parentNode.parentNode.parentNode.id;
     let currentItem = editableItem.textContent;
     editableItem.addEventListener("input", () => {
       editedTask = editableItem.textContent;
@@ -153,22 +155,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Delete todo
   const deleteTodoById = (id) => {
+    console.log(id);
     // remove element to be deleted form collection
     let tasksInDb = JSON.parse(db.getItem("tasks")).filter(
       (task) => task.id != id
     );
     db.setItem("tasks", JSON.stringify(tasksInDb));
     // reload window
-    window.location = "/";
+    window.location.reload();
   };
 
   // Check action [delete or edit]
   function checkAction(event) {
-    let id = event.target.parentNode.parentNode.parentNode.id;
+    let id = event.target.parentNode.id;
     if (event.target.classList.contains("delete")) {
       deleteTodoById(id);
     } else {
-      editTodo(event);
+      editTodo(event, id);
     }
   }
 
