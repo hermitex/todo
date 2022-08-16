@@ -22,6 +22,16 @@ function getAllTasks() {
       </tr>
       `;
     });
+  } else {
+    db.setItem(
+      "tasks",
+      JSON.stringify([
+        {
+          id: "",
+          name: "",
+        },
+      ])
+    );
   }
 }
 
